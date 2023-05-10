@@ -1,0 +1,9 @@
+#!/bin/bash
+# only do this for interactive shells
+if [ "$-" != "${-#*i}" ]; then
+    if [ -f "$HOME/.not_logged_in_yet" ]; then
+        echo "Welcome to your webserver container. We advice you to change your password."
+        echo "Use passwd to change your password."
+        rm "$HOME/.not_logged_in_yet"
+    fi
+fi
