@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Check the Dockerfile
 
 # Controls when the workflow will run
 on:
@@ -23,12 +23,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: build the docker image
+        if: success()
+        run: docker build -t philias/ubuntu:staging
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: test the docker image
+        if: success()
+        run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 41440:22 philias/ubuntu:staging
