@@ -29,4 +29,4 @@ jobs:
 
       - name: test the docker image
         if: success()
-        run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 41440:22 philias/ubuntu:staging
+        run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 -p 41440:22 philias/ubuntu:staging
