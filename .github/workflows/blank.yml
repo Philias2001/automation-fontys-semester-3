@@ -25,7 +25,7 @@ jobs:
 
       - name: build the docker image
         if: success()
-        run: docker build -t philias/ubuntu:staging
+        run: docker build -t philias/ubuntu:staging .
 
       - name: test the docker image
         if: success()
