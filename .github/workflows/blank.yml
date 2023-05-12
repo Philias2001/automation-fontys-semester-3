@@ -22,7 +22,7 @@ jobs:
       - name: Checking the code
         uses: actions/checkout@v3
 
-  build/test-the-docker-image:
+  build--test-the-docker-image:
     runs-on: ubuntu-latest
 
     steps:
