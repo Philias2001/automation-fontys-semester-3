@@ -15,14 +15,14 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  "check the code":
+  check-the-code:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checking the code
         uses: actions/checkout@v3
 
-  "build/test the docker image":
+  build/test-the-docker-image:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,7 +33,7 @@ jobs:
         if: success()
         run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 -p 41440:22 philias/ubuntu:staging
 
-  "Ask for approval":
+  ask-for-approval:
     runs-on: ubuntu-latest
 
     steps:
