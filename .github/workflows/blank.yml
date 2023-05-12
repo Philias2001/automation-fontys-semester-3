@@ -30,3 +30,21 @@ jobs:
       - name: test the docker image
         if: success()
         run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 -p 41440:22 philias/ubuntu:staging
+
+      - name: Add pull request comment
+        uses: octokit/rest.js@v2.x
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_PIPELINE_TOKEN }}
+        with:
+          issue_number: ${{ github.event.pull.request.number }}
+          body: |
+            Please review and approve the changes made to the repo.
+            If the changes are correct type "approve", if the pull request is incorrect type "abort"
+
+      - name: Wait for pull request approval
+        if: success()
+        uses: peter-evans/wait-for-comment@v1
+        with:
+          issue-number: $(( steps.cpr.outputs.pull-request-number ))
+          comment-author: ""
+          comment-body: "approve"
