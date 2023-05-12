@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Merge pull request
-        if: success()
+        if: contains(github.event.comment.body, 'approve')
         uses: actions/github-script@v4
         with:
           script: |
