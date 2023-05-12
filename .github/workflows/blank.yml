@@ -15,23 +15,28 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  check the code:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Checking the code
+        uses: actions/checkout@v3
 
-      - name: build the docker image
-        if: success()
+  build/test the docker image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build the docker image
         run: docker build -t philias/ubuntu:staging .
 
-      - name: test the docker image
+      - name: Test the docker image
         if: success()
         run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 -p 41440:22 philias/ubuntu:staging
 
+  Ask for approval:
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Ask for approval
         uses: peter-evans/create-or-update-comment@v3
         with:
@@ -41,30 +46,3 @@ jobs:
             Please review the pull request.
             If approved please comment "approve".
             Otherwise make comments on the code, or to close the pull request comment "abort".
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: check for approval comment
-        run: until npx github-comment wait --owner ${{ github.repository_owner }} --repo ${{ github.repository }} --number ${{ github.event.pull_request.number }} --check-for='approve'
-
-      - name: Merge pull request
-        if: success()
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const { context, github } require('@actions/github');
-            const prNumber = context.payload.pull_request.number;
-            const mergeMethod = 'merge';
-
-            await github.pulls.merge({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber,
-              merge_method: mergeMethod
-            });
