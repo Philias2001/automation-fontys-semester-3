@@ -53,7 +53,6 @@ jobs:
       - name: check for approval comment
         run: |
           until npx github-comment wait --owner ${{ github.repository_owner }} --repo ${{ github.repository }} --number ${{ github.event.pull_request.number }} --check for='approve'
-          echo "Approval comment found"
 
       - name: Merge pull request
         if: success()
