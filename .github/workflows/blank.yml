@@ -32,15 +32,28 @@ jobs:
         if: success()
         run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 -p 41440:22 philias/ubuntu:staging
 
-      - name: Create comment
+      - name: Ask for approval
         uses: peter-evans/create-or-update-comment@v3
         with:
           token: ${{ secrets.MY_PIPELINE_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            This is a multi-line test comment
-            - With GitHub **Markdown** :sparkles:
-            - Created by [create-or-update-comment][1]
+            Please review the pull request.
+            If approved please comment "approve".
+            Otherwise make comments on the code, or to close the pull request comment "abort".
 
-            [1]: https://github.com/peter-evans/create-or-update-comment
-          reactions: '+1'
+      - name: Merge pull request
+        if: success() && contains(github.event.comment.body, 'approve')
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const { context, github } require('@actions/github');
+            const prNumber = context.payload.pull_request.number;
+            const mergeMethod = 'merge';
+
+          await github.pulls.merge({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: prNumber,
+            merge_method: mergeMethod
+          });
