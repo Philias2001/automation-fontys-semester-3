@@ -32,7 +32,7 @@ jobs:
         run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 -p 41440:22 philias/ubuntu:staging
 
       - name: Add pull request comment
-        uses: octokit/rest.js@v2.x
+        uses: octokit/rest.js@v2
         env:
           GITHUB_TOKEN: ${{ secrets.MY_PIPELINE_TOKEN }}
         with:
