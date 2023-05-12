@@ -32,9 +32,15 @@ jobs:
         if: success()
         run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 -p 41440:22 philias/ubuntu:staging
 
-      - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v2
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v3
         with:
-          GITHUB_TOKEN: ${{ secrets.MY_PIPELINE_TOKEN }}
-          message: |
-            Hello world ! :wave:
+          token: ${{ secrets.MY_PIPELINE_TOKEN }}
+          issue-number: 1
+          body: |
+            This is a multi-line test comment
+            - With GitHub **Markdown** :sparkles:
+            - Created by [create-or-update-comment][1]
+
+            [1]: https://github.com/peter-evans/create-or-update-comment
+          reactions: '+1'
