@@ -26,6 +26,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checking the code
+        uses: actions/checkout@v3
+
       - name: Build the docker image
         run: docker build -t philias/ubuntu:staging .
 
