@@ -32,28 +32,12 @@ jobs:
         if: success()
         run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 -p 41440:22 philias/ubuntu:staging
 
-      - name: Add pull request comment
-        uses: actions/github-script@v4
+      - name: Create commit comment
+        uses: peter-evans/commit-comment@v2
         with:
-          github-token: $(( secrets.MY_PIPELINE_TOKEN ))
-          script: |
-            const { Octokit } = require("@octokit/rest");
-            const octokit = new Octokit({ auth: process.env.MY_PIPELINE_TOKEN });
-            const commentBody = "This is a comment";
-            octokit.issues.createComment({
-              owner: process.env.GITHUB_REPOSITORY.split("/")[0],
-              repo: process.env.GITHUB_REPOSITORY.split("/")[1],
-              issue_number: process.env.GITHUB_PULL_REQUEST_NUMBER,
-              body: commentBody
-            });
+          body: |
+            This is a multi-line test comment
+            - With GitHub **Markdown** :sparkles:
+            - Created by [commit-comment][1]
 
-      - name: Wait for pull request approval
-        if: success()
-        uses: peter-evans/merge-pull-request@v3
-        with:
-          github-token: ${{ secrets.MY_PIPELINE_TOKEN }}
-          merge-method: merge
-          delete-branch: false
-          merge-message: "Automatically merged by GitHub Actions"
-          pr-title-regex: ".*"
-          pr-body-regex: "approve"
+            [1]: https://github.com/peter-evans/commit-comment
