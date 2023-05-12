@@ -7,6 +7,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   pull_request:
     branches: [ "main" ]
+    types: [ opened, synchronize, reopened ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -48,8 +49,11 @@ jobs:
 
       - name: Wait for pull request approval
         if: success()
-        uses: peter-evans/wait-for-comment@v1
+        uses: peter-evans/merge-pull-request@v3
         with:
-          issue-number: $(( steps.cpr.outputs.pull-request-number ))
-          comment-author: ""
-          comment-body: "approve"
+          github-token: ${{ secrets.MY_PIPELINE_TOKEN }}
+          merge-method: merge
+          delete-branch: false
+          merge-message: "Automatically merged by GitHub Actions"
+          pr-title-regex: ".*"
+          pr-body-regex: "approve"
