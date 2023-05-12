@@ -1,32 +1,47 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Check the Dockerfile
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   pull_request:
     branches: [ "main" ]
+    types: [ opened, synchronize, reopened ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  check-the-code:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Checking the code
+        uses: actions/checkout@v3
 
-      - name: build the docker image
-        if: success()
+  build--test-the-docker-image:
+    runs-on: ubuntu-latest
+    needs: check-the-code
+
+    steps:
+      - name: Checking the code
+        uses: actions/checkout@v3
+
+      - name: Build the docker image
         run: docker build -t philias/ubuntu:staging .
 
-      - name: test the docker image
+      - name: Test the docker image
         if: success()
         run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 -p 41440:22 philias/ubuntu:staging
+
+  ask-for-approval:
+    runs-on: ubuntu-latest
+    needs: build--test-the-docker-image
+
+    steps:
+      - name: Ask for approval
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.MY_PIPELINE_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Please review the pull request.
+            If approved please comment "approve".
+            Otherwise make comments on the code, or to close the pull request comment "abort".
