@@ -15,7 +15,7 @@ jobs:
         with:
           github-token: ${{ secrets.MY_PIPELINE_TOKEN }}
           script: |
-            const { context, github } require('@actions/github');
+            const { github } require('@actions/github');
             const prNumber = context.payload.pull_request.number;
             const mergeMethod = 'merge';
 
