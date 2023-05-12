@@ -16,11 +16,14 @@ jobs:
       - name: Checking the code
         uses: actions/checkout@v3
 
-  build--test-the docker-image:
+  build--test-the-docker-image:
     runs-on: ubuntu-latest
     needs: check-the-code
 
     steps:
+      - name: Checking the code
+        uses: actions/checkout@v3
+
       - name: Build the docker image
         run: docker build -t philias/ubuntu:staging .
 
