@@ -42,8 +42,21 @@ jobs:
             If approved please comment "approve".
             Otherwise make comments on the code, or to close the pull request comment "abort".
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: check for approval comment
+        run: |
+          until npx github-comment wait --owner ${{ github.repository_owner }} --repo ${{ github.repository }} --number ${{ github.event.pull_request.number }} --check for='approve'
+          echo "Approval comment found"
+
       - name: Merge pull request
-        if: success() && contains(github.event.comment.body, 'approve')
+        if: success()
         uses: actions/github-script@v4
         with:
           script: |
