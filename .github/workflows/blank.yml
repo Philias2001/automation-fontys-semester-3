@@ -35,7 +35,7 @@ jobs:
       - name: Create commit comment
         uses: peter-evans/commit-comment@v2
         with:
-          token: ${{ secret.MY_PIPELINE_TOKEN }}
+          token: ${{ secrets.MY_PIPELINE_TOKEN }}
           body: |
             This is a multi-line test comment
             - With GitHub **Markdown** :sparkles:
