@@ -1,20 +1,14 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Check the Dockerfile
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   pull_request:
     branches: [ "main" ]
     types: [ opened, synchronize, reopened ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   check-the-code:
     runs-on: ubuntu-latest
 
@@ -22,14 +16,11 @@ jobs:
       - name: Checking the code
         uses: actions/checkout@v3
 
-  build--test-the-docker-image:
+  build--test-the docker-image:
     runs-on: ubuntu-latest
     needs: check-the-code
 
     steps:
-      - name: Checking the code
-        uses: actions/checkout@v3
-
       - name: Build the docker image
         run: docker build -t philias/ubuntu:staging .
 
