@@ -11,17 +11,7 @@ jobs:
     steps:
       - name: Merge pull request
         if: contains(github.event.comment.body, 'approve')
-        uses: actions/github-script@v4
-        with:
-          github-token: ${{ secrets.MY_PIPELINE_TOKEN }}
-          script: |
-            const prNumber = context.payload.pull_request.number;
-            const mergeMethod = 'merge';
-
-            await github.pulls.merge({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber,
-              merge_method: mergeMethod
-            });
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.MY_PIPELINE_TOKEN }}"
         
