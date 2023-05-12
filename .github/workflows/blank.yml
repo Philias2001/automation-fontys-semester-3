@@ -36,7 +36,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v3
         with:
           token: ${{ secrets.MY_PIPELINE_TOKEN }}
-          issue-number: 1
+          issue-number: ${{ github.event.pull_request.number }}
           body: |
             This is a multi-line test comment
             - With GitHub **Markdown** :sparkles:
