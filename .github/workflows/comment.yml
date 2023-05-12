@@ -10,8 +10,9 @@ jobs:
 
     steps:
       - name: Merge pull request
-        if: contains(github.event.comment.body, 'approve')
-        uses: "pascalgn/automerge-action@v0.15.6"
-        env:
-          GITHUB_TOKEN: "${{ secrets.MY_PIPELINE_TOKEN }}"
+        if: contains(github.event.comment.body, '/approve')
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.MY_PIPELINE_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
         

@@ -43,5 +43,5 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             Please review the pull request.
-            If approved please comment "approve".
-            Otherwise make comments on the code, or to close the pull request comment "abort".
+            If approved please comment slash "approve".
+            Otherwise make comments on the code, or to close the pull request comment slash "abort".
