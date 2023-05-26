@@ -31,17 +31,17 @@ jobs:
         if: success()
         run: docker run -d -i -t --name philias-ubuntu-staging -p 4144:80 -p 41440:22 philias/ubuntu:staging
 
-  ask-for-approval:
-    runs-on: ubuntu-latest
-    needs: build--test-the-docker-image
+  # ask-for-approval:
+  #   runs-on: ubuntu-latest
+  #   needs: build--test-the-docker-image
 
-    steps:
-      - name: Ask for approval
-        uses: peter-evans/create-or-update-comment@v3
-        with:
-          token: ${{ secrets.MY_PIPELINE_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            Please review the pull request.
-            If approved please comment slash "approve".
-            Otherwise make comments on the code, or to close the pull request comment slash "abort".
+  #   steps:
+  #     - name: Ask for approval
+  #       uses: peter-evans/create-or-update-comment@v3
+  #       with:
+  #         token: ${{ secrets.MY_PIPELINE_TOKEN }}
+  #         issue-number: ${{ github.event.pull_request.number }}
+  #         body: |
+  #           Please review the pull request.
+  #           If approved please comment slash "approve".
+  #           Otherwise make comments on the code, or to close the pull request comment slash "abort".
